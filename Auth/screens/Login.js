@@ -4,16 +4,13 @@ import { SafeAreaView } from 'react-navigation'
 import { Text, Button, TextInput, Card } from 'react-native-paper'
 import Collapsible from 'react-native-collapsible'
 import LoginForm from '../components/LoginForm'
+import JokeBody from '../components/JokeBody'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const Login = ({ navigation }) => {
   const [isCollapsed, setCollapsed] = useState(true)
-  const [chevronStyle, setChevStyle] = useState({})
   const collapse = () => {
     setCollapsed(!isCollapsed)
-    isCollapsed
-      ? setChevStyle({ transform: [{ rotate: '180deg' }] })
-      : setChevStyle({ transform: [{ rotate: '360deg' }] })
   }
 
   return (
@@ -34,7 +31,9 @@ const Login = ({ navigation }) => {
           >
             <Text style={styles.CardHeading}>Sign In to save this Joke!</Text>
             <MaterialCommunityIcons
-              style={chevronStyle}
+              style={{
+                transform: [{ rotate: isCollapsed ? '360deg' : '180deg' }]
+              }}
               name="chevron-down-circle"
               size={24}
               color="black"
@@ -48,6 +47,9 @@ const Login = ({ navigation }) => {
           <LoginForm />
         </Collapsible>
       </Card>
+      <Card style={styles.CardJoke}>
+        <JokeBody />
+      </Card>
     </SafeAreaView>
   )
 }
@@ -59,11 +61,18 @@ const styles = StyleSheet.create({
   },
   CardHeading: {
     fontSize: 18,
-    color: '#3e3e3e',
-    fontWeight: 'bold'
+    color: '#3e3e3e'
   },
   Card: {
     marginHorizontal: 15,
+    borderRadius: 8,
+    marginTop: 25,
+    backgroundColor: '#e5e5e5'
+  },
+  CardJoke: {
+    textAlign: 'center',
+    padding: 35,
+    marginHorizontal: 30,
     borderRadius: 8,
     marginTop: 25,
     backgroundColor: '#e5e5e5'
