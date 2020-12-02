@@ -6,10 +6,10 @@ const LoginForm = () => {
   return (
     <>
       <View style={styles.InnerContainer}>
-        <TextInput style={styles.TextInput} label="Email" />
+        <TextInput style={styles.TextInput} placeholder="Email" />
         <TextInput
           style={styles.TextInput}
-          label="Password"
+          placeholder="Password"
           secureTextEntry={true}
         />
         <Button style={styles.Button} mode="contained">
@@ -28,9 +28,9 @@ const styles = StyleSheet.create({
   },
 
   TextInput: {
-    margin: 10,
+    margin: 8,
     width: '100%',
-    height: 60,
+    height: 45,
     backgroundColor: '#c4c4c4',
     fontSize: 14
   },

@@ -1,29 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet } from 'react-native'
-import { Button, Text } from 'react-native-paper'
-import dadJokes from '../api/dadJokesApi'
+import { ActivityIndicator, Text } from 'react-native-paper'
 
-const JokeBody = () => {
-  const newJoke = async () => {
-    const response = await dadJokes.get('/', {
-      headers: { Accept: 'application/json' }
-    })
-    console.log(response.data)
-    setJoke(response.data.joke)
-  }
-
-  const [joke, setJoke] = useState('Dad Joke!')
+const JokeBody = ({ joke, isLoading }) => {
   return (
     <>
-      <Text style={styles.TextJoke}>{joke}</Text>
-      <Button
-        style={styles.ButtonNewJoke}
-        onPress={() => {
-          newJoke()
-        }}
-      >
-        new Joke!
-      </Button>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <Text style={styles.TextJoke}>{joke}</Text>
+      )}
     </>
   )
 }
@@ -33,9 +19,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: '#3e3e3e'
-  },
-  ButtonNewJoke: {
-    marginTop: 40
   }
 })
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { Text, Button, TextInput, Card } from 'react-native-paper'
@@ -6,12 +6,30 @@ import Collapsible from 'react-native-collapsible'
 import LoginForm from '../components/LoginForm'
 import JokeBody from '../components/JokeBody'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import dadJokes from '../api/dadJokesApi'
+import { Ionicons } from '@expo/vector-icons'
 
 const Login = ({ navigation }) => {
   const [isCollapsed, setCollapsed] = useState(true)
+  const [joke, setJoke] = useState('Dad Joke!')
+  const [isLoading, setLoading] = useState(false)
   const collapse = () => {
     setCollapsed(!isCollapsed)
   }
+
+  const newJoke = async () => {
+    setLoading(true)
+    const response = await dadJokes.get('/', {
+      headers: { Accept: 'application/json' }
+    })
+    setLoading(false)
+    console.log(response.data)
+    setJoke(response.data.joke)
+  }
+
+  useEffect(() => {
+    newJoke()
+  }, [])
 
   return (
     <SafeAreaView style={styles.Container} forceInset={{ top: 'always' }}>
@@ -26,10 +44,17 @@ const Login = ({ navigation }) => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              margin: 20
+              margin: 18
             }}
           >
-            <Text style={styles.CardHeading}>Sign In to save this Joke!</Text>
+            <Text
+              style={{
+                ...styles.CardHeading,
+                fontWeight: isCollapsed ? 'normal' : 'bold'
+              }}
+            >
+              Sign In to save this Joke!
+            </Text>
             <MaterialCommunityIcons
               style={{
                 transform: [{ rotate: isCollapsed ? '360deg' : '180deg' }]
@@ -42,14 +67,32 @@ const Login = ({ navigation }) => {
         </TouchableOpacity>
         <Collapsible
           collapsed={isCollapsed}
-          style={{ paddingHorizontal: 20, paddingBottom: 20 }}
+          style={{ paddingHorizontal: 20, paddingBottom: 25 }}
         >
           <LoginForm />
         </Collapsible>
       </Card>
-      <Card style={styles.CardJoke}>
-        <JokeBody />
-      </Card>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'space-between',
+          position: 'relative'
+        }}
+      >
+        <Card style={styles.CardJoke}>
+          <JokeBody joke={joke} isLoading={isLoading} />
+        </Card>
+        <Button
+          icon="shuffle"
+          style={styles.ButtonNewJoke}
+          mode="contained"
+          onPress={() => {
+            newJoke()
+          }}
+        >
+          new Joke!
+        </Button>
+      </View>
     </SafeAreaView>
   )
 }
@@ -71,11 +114,23 @@ const styles = StyleSheet.create({
   },
   CardJoke: {
     textAlign: 'center',
+    height: 'auto',
     padding: 35,
     marginHorizontal: 30,
     borderRadius: 8,
     marginTop: 25,
     backgroundColor: '#e5e5e5'
+  },
+  ButtonNewJoke: {
+    width: 150,
+    alignSelf: 'flex-end',
+    backgroundColor: 'black',
+    borderRadius: 30,
+    height: 50,
+    paddingTop: 5,
+    position: 'absolute',
+    bottom: 25,
+    right: 25
   }
 })
 export default Login
