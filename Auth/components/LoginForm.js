@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     marginTop: 35,
     width: 100,
     alignSelf: 'flex-end',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    borderRadius: 30
   }
 })
 

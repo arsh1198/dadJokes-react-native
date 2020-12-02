@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
-import { ActivityIndicator, Text } from 'react-native-paper'
+import { StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Text, Divider } from 'react-native-paper'
+import JokeActionButtons from './JokeActionButtons'
 
 const JokeBody = ({ joke, isLoading }) => {
   return (
@@ -8,7 +9,19 @@ const JokeBody = ({ joke, isLoading }) => {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <Text style={styles.TextJoke}>{joke}</Text>
+        <>
+          <Text style={styles.TextJoke}>{joke}</Text>
+          <Divider style={{ marginVertical: 20, height: 1 }} />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center'
+            }}
+          >
+            <JokeActionButtons />
+          </View>
+        </>
       )}
     </>
   )

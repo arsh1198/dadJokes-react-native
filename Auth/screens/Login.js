@@ -8,6 +8,7 @@ import JokeBody from '../components/JokeBody'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import dadJokes from '../api/dadJokesApi'
 import { Ionicons } from '@expo/vector-icons'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Login = ({ navigation }) => {
   const [isCollapsed, setCollapsed] = useState(true)
@@ -67,7 +68,7 @@ const Login = ({ navigation }) => {
         </TouchableOpacity>
         <Collapsible
           collapsed={isCollapsed}
-          style={{ paddingHorizontal: 20, paddingBottom: 25 }}
+          style={{ paddingHorizontal: 32, paddingBottom: 25 }}
         >
           <LoginForm />
         </Collapsible>
