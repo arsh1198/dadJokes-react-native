@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
-import { Text, Button, TextInput, Card } from 'react-native-paper'
+import { Text, Button, Card } from 'react-native-paper'
 import Collapsible from 'react-native-collapsible'
 import LoginForm from '../components/LoginForm'
 import JokeBody from '../components/JokeBody'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import dadJokes from '../api/dadJokesApi'
-import { Ionicons } from '@expo/vector-icons'
-import { ScrollView } from 'react-native-gesture-handler'
+import CollapsibleCard from '../components/CollapsibleCard'
 
-const Login = ({ navigation }) => {
-  const [isCollapsed, setCollapsed] = useState(true)
+const Login = () => {
   const [joke, setJoke] = useState('Dad Joke!')
   const [isLoading, setLoading] = useState(false)
-  const collapse = () => {
-    setCollapsed(!isCollapsed)
-  }
 
   const newJoke = async () => {
     setLoading(true)
@@ -34,45 +29,11 @@ const Login = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.Container} forceInset={{ top: 'always' }}>
-      <Card style={styles.Card}>
-        <TouchableOpacity
-          onPress={() => {
-            collapse()
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              margin: 18
-            }}
-          >
-            <Text
-              style={{
-                ...styles.CardHeading,
-                fontWeight: isCollapsed ? 'normal' : 'bold'
-              }}
-            >
-              Sign In to save this Joke!
-            </Text>
-            <MaterialCommunityIcons
-              style={{
-                transform: [{ rotate: isCollapsed ? '360deg' : '180deg' }]
-              }}
-              name="chevron-down-circle"
-              size={24}
-              color="black"
-            />
-          </View>
-        </TouchableOpacity>
-        <Collapsible
-          collapsed={isCollapsed}
-          style={{ paddingHorizontal: 32, paddingBottom: 25 }}
-        >
+      <View style={{ marginHorizontal: 16, marginTop: 24 }}>
+        <CollapsibleCard heading="Sign In">
           <LoginForm />
-        </Collapsible>
-      </Card>
+        </CollapsibleCard>
+      </View>
       <View
         style={{
           flex: 1,
@@ -103,16 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#5C5A7A'
   },
-  CardHeading: {
-    fontSize: 18,
-    color: '#3e3e3e'
-  },
-  Card: {
-    marginHorizontal: 15,
-    borderRadius: 8,
-    marginTop: 25,
-    backgroundColor: '#e5e5e5'
-  },
+
   CardJoke: {
     textAlign: 'center',
     height: 'auto',

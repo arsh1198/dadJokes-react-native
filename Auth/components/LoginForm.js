@@ -1,6 +1,8 @@
-import React from 'react'
-import { Text, Button, TextInput } from 'react-native-paper'
-import { StyleSheet, View } from 'react-native'
+import React, { useState } from 'react'
+import { Text, Button, TextInput, Card } from 'react-native-paper'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import Collapsible from 'react-native-collapsible'
 
 const LoginForm = () => {
   return (
@@ -12,16 +14,31 @@ const LoginForm = () => {
           placeholder="Password"
           secureTextEntry={true}
         />
-        <Button style={styles.Button} mode="contained">
-          Log In
-        </Button>
+        <View style={styles.ButtonContainer}>
+          <TouchableOpacity>
+            <Text
+              style={{
+                color: '#3e3e3e',
+                fontStyle: 'italic',
+                textDecorationLine: 'underline',
+                marginLeft: 10,
+                fontSize: 14
+              }}
+            >
+              Create an Account!
+            </Text>
+          </TouchableOpacity>
+          <Button style={styles.Button} mode="contained">
+            Log In
+          </Button>
+        </View>
       </View>
     </>
   )
 }
-
 const styles = StyleSheet.create({
   InnerContainer: {
+    marginTop: 25,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
@@ -35,11 +52,17 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   Button: {
-    marginTop: 35,
     width: 100,
     alignSelf: 'flex-end',
     backgroundColor: 'black',
     borderRadius: 30
+  },
+  ButtonContainer: {
+    width: '100%',
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   }
 })
 

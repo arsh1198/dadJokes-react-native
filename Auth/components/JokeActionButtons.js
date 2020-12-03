@@ -1,6 +1,5 @@
-import react from 'react'
 import React from 'react'
-import { Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 const JokeActionButtons = () => {
