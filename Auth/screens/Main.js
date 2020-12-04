@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
-import { Text, Button, Card } from 'react-native-paper'
-import Collapsible from 'react-native-collapsible'
+import { Button, Card } from 'react-native-paper'
 import LoginForm from '../components/LoginForm'
 import JokeBody from '../components/JokeBody'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import dadJokes from '../api/dadJokesApi'
 import CollapsibleCard from '../components/CollapsibleCard'
+import SignUpForm from '../components/SignUpForm'
+import AuthProvider from '../context/AuthContext'
 
 const Login = () => {
   const [joke, setJoke] = useState('Dad Joke!')
   const [isLoading, setLoading] = useState(false)
+  const [isLogin, setLogin] = useState(true)
+  const heading = isLogin ? 'Sign In to ♥ this joke' : 'Create an Account ☺'
+
+  const toggleLogin = () => setLogin(!isLogin)
 
   const newJoke = async () => {
     setLoading(true)
@@ -30,8 +34,14 @@ const Login = () => {
   return (
     <SafeAreaView style={styles.Container} forceInset={{ top: 'always' }}>
       <View style={{ marginHorizontal: 16, marginTop: 24 }}>
-        <CollapsibleCard heading="Sign In">
-          <LoginForm />
+        <CollapsibleCard heading={heading}>
+          <AuthProvider>
+            {isLogin ? (
+              <LoginForm toggle={toggleLogin} />
+            ) : (
+              <SignUpForm toggle={toggleLogin} />
+            )}
+          </AuthProvider>
         </CollapsibleCard>
       </View>
       <View

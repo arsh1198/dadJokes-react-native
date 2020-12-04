@@ -3,8 +3,8 @@ import { Text, Button, TextInput } from 'react-native-paper'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { AuthContext } from '../context/AuthContext'
 
-const LoginForm = ({ toggle }) => {
-  const { signIn } = useContext(AuthContext)
+const SignUpForm = ({ toggle }) => {
+  const { signUp } = useContext(AuthContext)
   const [email, setEmail] = useState('')
   const [password, setPassowrd] = useState('')
 
@@ -35,17 +35,17 @@ const LoginForm = ({ toggle }) => {
                 fontSize: 14
               }}
             >
-              Create an Account!
+              Sign In instead
             </Text>
           </TouchableOpacity>
           <Button
             onPress={() => {
-              signIn({ email, password })
+              signUp({ email, password })
             }}
             style={styles.Button}
             mode="contained"
           >
-            Login
+            Create
           </Button>
         </View>
       </View>
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default LoginForm
+export default SignUpForm
