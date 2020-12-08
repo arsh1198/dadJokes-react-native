@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { Button, Card } from 'react-native-paper'
@@ -7,15 +7,27 @@ import JokeBody from '../components/JokeBody'
 import dadJokes from '../api/dadJokesApi'
 import CollapsibleCard from '../components/CollapsibleCard'
 import SignUpForm from '../components/SignUpForm'
-import AuthProvider from '../context/AuthContext'
+import useUser from '../hooks/useUser'
+import Menu from '../components/menu'
 
 const Login = () => {
   const [joke, setJoke] = useState('Dad Joke!')
   const [isLoading, setLoading] = useState(false)
   const [isLogin, setLogin] = useState(true)
+  const { isSignedIn, user, error } = useUser()
+  console.log(user)
   const heading = isLogin ? 'Sign In to ♥ this joke' : 'Create an Account ☺'
-
   const toggleLogin = () => setLogin(!isLogin)
+
+  const content = useMemo(() => {
+    if (isSignedIn) return <Menu user={user} />
+
+    if (isLogin) {
+      return <LoginForm toggle={toggleLogin} />
+    } else {
+      return <SignUpForm toggle={toggleLogin} />
+    }
+  }, [isLogin, isSignedIn])
 
   const newJoke = async () => {
     setLoading(true)
@@ -34,15 +46,7 @@ const Login = () => {
   return (
     <SafeAreaView style={styles.Container} forceInset={{ top: 'always' }}>
       <View style={{ marginHorizontal: 16, marginTop: 24 }}>
-        <CollapsibleCard heading={heading}>
-          <AuthProvider>
-            {isLogin ? (
-              <LoginForm toggle={toggleLogin} />
-            ) : (
-              <SignUpForm toggle={toggleLogin} />
-            )}
-          </AuthProvider>
-        </CollapsibleCard>
+        <CollapsibleCard heading={heading}>{content}</CollapsibleCard>
       </View>
       <View
         style={{

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Text, Button, TextInput } from 'react-native-paper'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { AuthContext } from '../context/AuthContext'
+import { AuthContext } from '../context/authContext'
 
 const LoginForm = ({ toggle }) => {
   const { signIn } = useContext(AuthContext)

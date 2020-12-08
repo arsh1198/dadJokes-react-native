@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Text, Button, TextInput } from 'react-native-paper'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { AuthContext } from '../context/AuthContext'
+import { AuthContext } from '../context/authContext'
 
 const SignUpForm = ({ toggle }) => {
   const { signUp } = useContext(AuthContext)
@@ -40,6 +40,7 @@ const SignUpForm = ({ toggle }) => {
           </TouchableOpacity>
           <Button
             onPress={() => {
+              console.log(email, password)
               signUp({ email, password })
             }}
             style={styles.Button}
