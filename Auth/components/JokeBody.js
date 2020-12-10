@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ActivityIndicator, Text, Divider } from 'react-native-paper'
 import JokeActionButtons from './JokeActionButtons'
+import { JokeContext } from '../context/jokeContext'
 
-const JokeBody = ({ joke, isLoading }) => {
+const JokeBody = ({ joke }) => {
+  const { jokeLoading } = useContext(JokeContext)
+
   return (
     <>
-      {isLoading ? (
+      {jokeLoading ? (
         <ActivityIndicator />
       ) : (
         <>

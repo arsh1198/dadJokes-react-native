@@ -6,22 +6,25 @@ import { StyleSheet } from 'react-native'
 import Main from './screens/Main'
 import Home from './screens/Home'
 import AuthProvider from './context/authContext'
+import JokeProvider from './context/jokeContext'
 
 const Stack = createStackNavigator()
 
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Main"
-            component={Main}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="Home" component={Home} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <JokeProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Main"
+              component={Main}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="Home" component={Home} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </JokeProvider>
     </AuthProvider>
   )
 }

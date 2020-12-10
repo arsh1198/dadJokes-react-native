@@ -35,7 +35,7 @@ const authReducer = (state, Action) => {
 }
 
 const authProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, {})
+  const [state, dispatch] = useReducer(authReducer, initialState)
   const { user, error } = state
 
   const signUp = async ({ email, password }) => {

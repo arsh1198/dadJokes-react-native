@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import { Button, Card } from 'react-native-paper'
@@ -9,15 +9,25 @@ import CollapsibleCard from '../components/CollapsibleCard'
 import SignUpForm from '../components/SignUpForm'
 import useUser from '../hooks/useUser'
 import Menu from '../components/menu'
+import { JokeContext } from '../context/jokeContext'
 
 const Login = () => {
-  const [joke, setJoke] = useState('Dad Joke!')
-  const [isLoading, setLoading] = useState(false)
   const [isLogin, setLogin] = useState(true)
   const { isSignedIn, user, error } = useUser()
-  console.log(user)
-  const heading = isLogin ? 'Sign In to ♥ this joke' : 'Create an Account ☺'
+
+  const { joke, randomJoke } = useContext(JokeContext)
+
   const toggleLogin = () => setLogin(!isLogin)
+
+  const heading = useMemo(() => {
+    if (isSignedIn) return user.email
+
+    if (isLogin) {
+      return 'Sign In to ♥ this joke'
+    } else {
+      return 'Create an Account ☺'
+    }
+  }, [isSignedIn, isLogin])
 
   const content = useMemo(() => {
     if (isSignedIn) return <Menu user={user} />
@@ -29,18 +39,8 @@ const Login = () => {
     }
   }, [isLogin, isSignedIn])
 
-  const newJoke = async () => {
-    setLoading(true)
-    const response = await dadJokes.get('/', {
-      headers: { Accept: 'application/json' }
-    })
-    setLoading(false)
-    console.log(response.data)
-    setJoke(response.data.joke)
-  }
-
   useEffect(() => {
-    newJoke()
+    randomJoke()
   }, [])
 
   return (
@@ -56,14 +56,14 @@ const Login = () => {
         }}
       >
         <Card style={styles.CardJoke}>
-          <JokeBody joke={joke} isLoading={isLoading} />
+          <JokeBody joke={joke} />
         </Card>
         <Button
           icon="shuffle"
           style={styles.ButtonNewJoke}
           mode="contained"
           onPress={() => {
-            newJoke()
+            randomJoke()
           }}
         >
           new Joke!
