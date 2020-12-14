@@ -36,6 +36,7 @@ const JokeActionButtons = () => {
           }}
         >
           <LottieView
+            speed={1.5}
             loop={false}
             ref={animation => {
               animationRef.current = animation

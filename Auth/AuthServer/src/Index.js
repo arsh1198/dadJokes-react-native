@@ -1,14 +1,17 @@
 require('./models/User')
+require('./models/Joke')
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const authRoutes = require('./routes/authRoutes')
+const jokeRoutes = require('./routes/jokeRoutes')
 const requireAuth = require('./middlewares/requireAuth')
 
 const app = express()
 
 app.use(bodyParser.json())
 app.use(authRoutes)
+app.use(jokeRoutes)
 
 const mongoUri =
   'mongodb+srv://turbonater62:Jatttinka1@cluster0.7yu0z.mongodb.net/Auth?retryWrites=true&w=majority'

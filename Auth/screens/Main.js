@@ -30,7 +30,7 @@ const Login = () => {
   }, [isSignedIn, isLogin])
 
   const content = useMemo(() => {
-    if (isSignedIn) return <Menu user={user} />
+    if (isSignedIn) return <Menu />
 
     if (isLogin) {
       return <LoginForm toggle={toggleLogin} />
