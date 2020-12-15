@@ -15,14 +15,20 @@ router.get('/jokes', async (req, res) => {
 })
 
 router.post('/joke', async (req, res) => {
-  const { text } = req.body
+  const { id, text } = req.body
+  console.log('BODY', req.body)
 
   if (!text) {
     return res.status(400).send({ error: 'Poorly Formatted request!' })
   }
   try {
-    const joke = new Joke({ user: req.user._id, text })
-    await joke.save()
+    const joke = await Joke.updateOne(
+      { id },
+      { text, $addToSet: { users: req.user._id } },
+      { upsert: true }
+    )
+    // const test = await Joke.find({}).populate('users')
+    // console.log(test)
     res.send(joke)
   } catch (error) {
     res.status(422).send(error.message)
