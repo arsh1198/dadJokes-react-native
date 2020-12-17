@@ -10,37 +10,40 @@ import SignUpForm from '../components/SignUpForm'
 import useUser from '../hooks/useUser'
 import Menu from '../components/menu'
 import { JokeContext } from '../context/jokeContext'
+import { AuthContext } from '../context/authContext'
 
 const Login = () => {
-  const [isLogin, setLogin] = useState(true)
+  const [LoginMode, setMode] = useState(true)
   const { isSignedIn, user, error } = useUser()
 
   const { joke, randomJoke } = useContext(JokeContext)
+  const { tryLocalSignIn } = useContext(AuthContext)
 
-  const toggleLogin = () => setLogin(!isLogin)
+  const toggleLogin = () => setMode(!LoginMode)
 
   const heading = useMemo(() => {
     if (isSignedIn) return user.email
 
-    if (isLogin) {
+    if (LoginMode) {
       return 'Sign In to ♥ this joke'
     } else {
       return 'Create an Account ☺'
     }
-  }, [isSignedIn, isLogin])
+  }, [isSignedIn, LoginMode])
 
   const content = useMemo(() => {
     if (isSignedIn) return <Menu />
 
-    if (isLogin) {
+    if (LoginMode) {
       return <LoginForm toggle={toggleLogin} />
     } else {
       return <SignUpForm toggle={toggleLogin} />
     }
-  }, [isLogin, isSignedIn])
+  }, [LoginMode, isSignedIn])
 
   useEffect(() => {
     randomJoke()
+    tryLocalSignIn()
   }, [])
 
   return (

@@ -58,6 +58,20 @@ const authProvider = ({ children }) => {
     }
   }
 
+  const tryLocalSignIn = async () => {
+    const token = await AsyncStorage.getItem('token')
+    if (token) {
+      const decoded = jwt_decode(token)
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          userId: decoded._id,
+          email: decoded.email
+        }
+      })
+    }
+  }
+
   const signIn = async ({ email, password }) => {
     try {
       const response = await authApi.post('/signin', { email, password })
@@ -81,8 +95,15 @@ const authProvider = ({ children }) => {
     }
   }
 
+  const signOut = async () => {
+    await AsyncStorage.removeItem('token')
+    dispatch({ type: 'LOGOUT' })
+  }
+
   return (
-    <AuthContext.Provider value={{ user, error, signUp, signIn }}>
+    <AuthContext.Provider
+      value={{ user, error, signUp, signIn, signOut, tryLocalSignIn }}
+    >
       {children}
     </AuthContext.Provider>
   )

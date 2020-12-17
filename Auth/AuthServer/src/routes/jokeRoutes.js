@@ -27,8 +27,6 @@ router.post('/joke', async (req, res) => {
       { text, $addToSet: { users: req.user._id } },
       { upsert: true }
     )
-    // const test = await Joke.find({}).populate('users')
-    // console.log(test)
     res.send(joke)
   } catch (error) {
     res.status(422).send(error.message)
