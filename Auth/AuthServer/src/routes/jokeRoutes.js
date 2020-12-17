@@ -18,8 +18,8 @@ router.post('/joke', async (req, res) => {
   const { id, text } = req.body
   console.log('BODY', req.body)
 
-  if (!text) {
-    return res.status(400).send({ error: 'Poorly Formatted request!' })
+  if (!text || !req.user) {
+    return res.status(400).send({ error: 'Something went wrong!' })
   }
   try {
     const joke = await Joke.updateOne(
@@ -27,7 +27,7 @@ router.post('/joke', async (req, res) => {
       { text, $addToSet: { users: req.user._id } },
       { upsert: true }
     )
-    res.send(joke)
+    res.send({ message: 'Added to your ♥ jokes!' })
   } catch (error) {
     res.status(422).send(error.message)
   }

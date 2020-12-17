@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useContext } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons'
 import LottieView from 'lottie-react-native'
+import { JokeContext } from '../context/jokeContext'
 
 const JokeActionButtons = () => {
+  const { likeJoke } = useContext(JokeContext)
   const animationRef = useRef()
   const [liked, setLiked] = useState(false)
   return (
@@ -13,6 +15,7 @@ const JokeActionButtons = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
+          likeJoke()
           if (animationRef.current) {
             setLiked(!liked)
             liked

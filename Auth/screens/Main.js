@@ -59,7 +59,7 @@ const Login = () => {
         }}
       >
         <Card style={styles.CardJoke}>
-          <JokeBody joke={joke} />
+          <JokeBody joke={joke ? joke.text : 'khaali'} />
         </Card>
         <Button
           icon="shuffle"
