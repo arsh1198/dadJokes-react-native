@@ -33,13 +33,15 @@ const jokeProvider = ({ children }) => {
   const randomJoke = async () => {
     try {
       dispatch({ type: 'JOKE_LOADING', payload: true })
-      const response = await dadJokesApi.get('/', {
-        headers: { Accept: 'application/json' }
-      })
+      const response = await authApi.get('/random')
       dispatch({ type: 'JOKE_LOADING', payload: false })
       dispatch({
         type: 'RANDOM_JOKE',
-        payload: { id: response.data.id, text: response.data.joke }
+        payload: {
+          id: response.data.id,
+          text: response.data.joke,
+          users: response.data.users
+        }
       })
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error })
@@ -50,11 +52,24 @@ const jokeProvider = ({ children }) => {
     try {
       if (joke) {
         console.log(joke.id, joke.text)
-        const response = await authApi.post('/joke', {
+        const response = await authApi.post('/like', {
           id: joke.id,
           text: joke.text
         })
-        console.log(response)
+        dispatch({ type: 'LIKE_JOKE', payload: true })
+        console.log(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const unlikeJoke = async () => {
+    try {
+      if (joke) {
+        const response = await authApi.post('/unlike', { id: joke.id })
+        dispatch({ type: 'LIKE_JOKE', payload: false })
+        console.log(response.data.message)
       }
     } catch (error) {
       console.log(error)
@@ -63,7 +78,15 @@ const jokeProvider = ({ children }) => {
 
   return (
     <JokeContext.Provider
-      value={{ joke, liked, jokeLoading, error, randomJoke, likeJoke }}
+      value={{
+        joke,
+        liked,
+        jokeLoading,
+        error,
+        randomJoke,
+        likeJoke,
+        unlikeJoke
+      }}
     >
       {children}
     </JokeContext.Provider>

@@ -65,7 +65,7 @@ const authProvider = ({ children }) => {
       dispatch({
         type: 'LOGIN',
         payload: {
-          userId: decoded._id,
+          userId: decoded.userId,
           email: decoded.email
         }
       })
@@ -82,7 +82,7 @@ const authProvider = ({ children }) => {
       dispatch({
         type: 'LOGIN',
         payload: {
-          userId: decoded._id,
+          userId: decoded.userId,
           email: decoded.email
         }
       })

@@ -1,13 +1,21 @@
-import React, { useRef, useState, useContext } from 'react'
+import React, { useRef, useState, useContext, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons'
 import LottieView from 'lottie-react-native'
 import { JokeContext } from '../context/jokeContext'
+import useUser from '../hooks/useUser'
 
 const JokeActionButtons = () => {
-  const { likeJoke } = useContext(JokeContext)
+  const { likeJoke, unlikeJoke, joke } = useContext(JokeContext)
+  const { user } = useUser()
   const animationRef = useRef()
-  const [liked, setLiked] = useState(false)
+  const [likedLocal, setLikedLocal] = useState(false)
+  const likedByMe = joke && user ? joke.users.includes(user.userId) : false
+
+  useEffect(() => {
+    setLikedLocal(likedByMe)
+  }, [likedByMe])
+
   return (
     <>
       <TouchableOpacity>
@@ -15,12 +23,17 @@ const JokeActionButtons = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          likeJoke()
           if (animationRef.current) {
-            setLiked(!liked)
-            liked
-              ? animationRef.current.play(50, 100) // Unlike Animation
-              : animationRef.current.play(0, 50) // Like Animation
+            if (likedLocal) {
+              animationRef.current.play(50, 100)
+              unlikeJoke()
+              setLikedLocal(false)
+            } else {
+              console.log('CHALA')
+              animationRef.current.play(0, 50)
+              likeJoke()
+              setLikedLocal(true)
+            }
           } else {
             console.log('nah')
           }
@@ -29,16 +42,13 @@ const JokeActionButtons = () => {
         <View
           style={{
             marginStart: 24,
-            // overflow: 'hidden',
             width: 30,
             height: 30,
             position: 'relative'
-            // backgroundColor: 'red'
-            // borderColor: 'red',
-            // borderWidth: 1
           }}
         >
           <LottieView
+            progress={likedLocal ? 0.5 : 0}
             speed={1.5}
             loop={false}
             ref={animation => {

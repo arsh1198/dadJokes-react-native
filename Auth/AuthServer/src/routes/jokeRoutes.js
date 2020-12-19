@@ -1,20 +1,19 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const requireAuth = require('../middlewares/requireAuth')
+const axios = require('axios')
 
-const User = mongoose.model('User')
 const Joke = mongoose.model('Joke')
 
 const router = express.Router()
 
-router.use(requireAuth)
-
-router.get('/jokes', async (req, res) => {
+router.get('/jokes', requireAuth, async (req, res) => {
   const jokes = await Joke.find({ user: req.user._id })
   res.send(jokes)
 })
-
-router.post('/joke', async (req, res) => {
+{
+}
+router.post('/like', requireAuth, async (req, res) => {
   const { id, text } = req.body
   if (!text || !req.user) {
     return res.status(400).send({ error: 'Something went wrong!' })
@@ -31,7 +30,7 @@ router.post('/joke', async (req, res) => {
   }
 })
 
-router.post('/unlike', async (req, res) => {
+router.post('/unlike', requireAuth, async (req, res) => {
   const { id } = req.body
   console.log('Juser', typeof req.user._id)
   if (!id || !req.user) {
@@ -46,6 +45,19 @@ router.post('/unlike', async (req, res) => {
   } catch (error) {
     res.status(422).send(error.message)
   }
+})
+
+router.get('/random', async (req, res) => {
+  const { data } = await axios.get('https://icanhazdadjoke.com', {
+    headers: { Accept: 'application/json' }
+  })
+
+  const jokeInDB = await Joke.findOne({ id: data.id })
+  const users = jokeInDB ? jokeInDB.users : []
+
+  const joke = { ...data, users }
+
+  res.json(joke)
 })
 
 module.exports = router
