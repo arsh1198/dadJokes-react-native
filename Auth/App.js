@@ -21,7 +21,11 @@ export default function App() {
               component={Main}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{ title: 'Saved Jokes' }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </JokeProvider>

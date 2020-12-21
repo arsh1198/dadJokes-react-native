@@ -8,11 +8,14 @@ const Joke = mongoose.model('Joke')
 const router = express.Router()
 
 router.get('/jokes', requireAuth, async (req, res) => {
-  const jokes = await Joke.find({ user: req.user._id })
-  res.send(jokes)
+  if (req.user) {
+    const jokes = await Joke.find({ users: req.user._id })
+    res.send(jokes)
+  } else {
+    res.status(401).send({ error: 'Something went wrong!' })
+  }
 })
-{
-}
+
 router.post('/like', requireAuth, async (req, res) => {
   const { id, text } = req.body
   if (!text || !req.user) {

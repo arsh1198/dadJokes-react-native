@@ -4,7 +4,7 @@ import { ActivityIndicator, Text, Divider } from 'react-native-paper'
 import JokeActionButtons from './JokeActionButtons'
 import { JokeContext } from '../context/jokeContext'
 
-const JokeBody = ({ joke }) => {
+const JokeBody = ({ joke, actionButtons, divider }) => {
   const { jokeLoading } = useContext(JokeContext)
 
   return (
@@ -14,7 +14,9 @@ const JokeBody = ({ joke }) => {
       ) : (
         <>
           <Text style={styles.TextJoke}>{joke}</Text>
-          <Divider style={{ marginVertical: 20, height: 1 }} />
+          {divider ? (
+            <Divider style={{ marginVertical: 20, height: 1 }} />
+          ) : null}
           <View
             style={{
               flexDirection: 'row',
@@ -22,7 +24,7 @@ const JokeBody = ({ joke }) => {
               alignItems: 'center'
             }}
           >
-            <JokeActionButtons />
+            {actionButtons ? <JokeActionButtons /> : null}
           </View>
         </>
       )}

@@ -1,5 +1,4 @@
 import { createContext, useReducer } from 'react'
-import dadJokesApi from '../api/dadJokesApi'
 import React from 'react'
 import authApi from '../api/authApi'
 
@@ -7,7 +6,7 @@ export const JokeContext = createContext()
 
 const initialState = {
   joke: null,
-  liked: false,
+  likedJokes: null,
   jokeLoading: true,
   error: null
 }
@@ -16,8 +15,8 @@ const jokeReducer = (state, action) => {
   switch (action.type) {
     case 'RANDOM_JOKE':
       return { ...state, joke: action.payload, error: null }
-    case 'LIKE_JOKE':
-      return { ...state, liked: action.payload }
+    case 'LIKED_JOKES':
+      return { ...state, likedJokes: action.payload, error: null }
     case 'JOKE_LOADING':
       return { ...state, jokeLoading: action.payload }
     case 'SET_ERROR':
@@ -28,7 +27,7 @@ const jokeReducer = (state, action) => {
 
 const jokeProvider = ({ children }) => {
   const [state, dispatch] = useReducer(jokeReducer, initialState)
-  const { joke, liked, jokeLoading, error } = state
+  const { joke, likedJokes, jokeLoading, error } = state
 
   const randomJoke = async () => {
     try {
@@ -48,6 +47,15 @@ const jokeProvider = ({ children }) => {
     }
   }
 
+  const fetchLikedJokes = async () => {
+    try {
+      const response = await authApi.get('/jokes')
+      dispatch({ type: 'LIKED_JOKES', payload: response.data })
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: error })
+    }
+  }
+
   const likeJoke = async () => {
     try {
       if (joke) {
@@ -60,7 +68,7 @@ const jokeProvider = ({ children }) => {
         console.log(response.data.message)
       }
     } catch (error) {
-      console.log(error)
+      dispatch({ type: 'SET_ERROR', payload: error })
     }
   }
 
@@ -72,7 +80,7 @@ const jokeProvider = ({ children }) => {
         console.log(response.data.message)
       }
     } catch (error) {
-      console.log(error)
+      dispatch({ type: 'SET_ERROR', payload: error })
     }
   }
 
@@ -80,10 +88,11 @@ const jokeProvider = ({ children }) => {
     <JokeContext.Provider
       value={{
         joke,
-        liked,
+        likedJokes,
         jokeLoading,
         error,
         randomJoke,
+        fetchLikedJokes,
         likeJoke,
         unlikeJoke
       }}

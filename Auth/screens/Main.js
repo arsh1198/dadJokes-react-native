@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-navigation'
 import { Button, Card } from 'react-native-paper'
 import LoginForm from '../components/LoginForm'
 import JokeBody from '../components/JokeBody'
-import dadJokes from '../api/dadJokesApi'
 import CollapsibleCard from '../components/CollapsibleCard'
 import SignUpForm from '../components/SignUpForm'
 import useUser from '../hooks/useUser'
@@ -12,7 +11,7 @@ import Menu from '../components/menu'
 import { JokeContext } from '../context/jokeContext'
 import { AuthContext } from '../context/authContext'
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [LoginMode, setMode] = useState(true)
   const { isSignedIn, user, error } = useUser()
 
@@ -34,7 +33,7 @@ const Login = () => {
   }, [isSignedIn, LoginMode])
 
   const content = useMemo(() => {
-    if (isSignedIn) return <Menu />
+    if (isSignedIn) return <Menu navigation={navigation} />
 
     if (LoginMode) {
       return <LoginForm toggle={toggleLogin} />
@@ -61,7 +60,11 @@ const Login = () => {
         }}
       >
         <Card style={styles.CardJoke}>
-          <JokeBody joke={joke ? joke.text : 'khaali'} />
+          <JokeBody
+            joke={joke ? joke.text : 'khaali'}
+            actionButtons={true}
+            divider={true}
+          />
         </Card>
         <Button
           icon="shuffle"

@@ -3,12 +3,16 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Button, Text } from 'react-native-paper'
 import { AuthContext } from '../context/authContext'
 
-const Menu = () => {
+const Menu = ({ navigation }) => {
   const { signOut } = useContext(AuthContext)
   return (
     <>
       <View style={styles.Container}>
-        <Button mode="contained" style={styles.Button}>
+        <Button
+          onPress={() => navigation.navigate('Home')}
+          mode="contained"
+          style={styles.Button}
+        >
           ❤️'d Jokes
         </Button>
         <TouchableOpacity onPress={signOut}>
