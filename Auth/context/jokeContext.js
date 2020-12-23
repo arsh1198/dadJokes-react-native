@@ -72,10 +72,10 @@ const jokeProvider = ({ children }) => {
     }
   }
 
-  const unlikeJoke = async () => {
+  const unlikeJoke = async id => {
     try {
       if (joke) {
-        const response = await authApi.post('/unlike', { id: joke.id })
+        const response = await authApi.post('/unlike', { id })
         dispatch({ type: 'LIKE_JOKE', payload: false })
         console.log(response.data.message)
       }

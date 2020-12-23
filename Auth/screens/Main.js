@@ -18,8 +18,6 @@ const Login = ({ navigation }) => {
   const { joke, randomJoke } = useContext(JokeContext)
   const { tryLocalSignIn } = useContext(AuthContext)
 
-  console.log('JOKE', joke)
-
   const toggleLogin = () => setMode(!LoginMode)
 
   const heading = useMemo(() => {

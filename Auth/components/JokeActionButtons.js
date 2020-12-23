@@ -26,7 +26,7 @@ const JokeActionButtons = () => {
           if (animationRef.current) {
             if (likedLocal) {
               animationRef.current.play(50, 100)
-              unlikeJoke()
+              unlikeJoke(joke.id)
               setLikedLocal(false)
             } else {
               console.log('CHALA')
