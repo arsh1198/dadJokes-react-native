@@ -50,7 +50,11 @@ const jokeProvider = ({ children }) => {
   const fetchLikedJokes = async () => {
     try {
       const response = await authApi.get('/jokes')
-      dispatch({ type: 'LIKED_JOKES', payload: response.data })
+      const likedJokes = response.data.map((joke, i) => ({
+        ...joke,
+        key: `${i}`
+      }))
+      dispatch({ type: 'LIKED_JOKES', payload: likedJokes })
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error })
     }

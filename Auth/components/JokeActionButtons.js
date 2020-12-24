@@ -6,11 +6,15 @@ import { JokeContext } from '../context/jokeContext'
 import useUser from '../hooks/useUser'
 
 const JokeActionButtons = () => {
-  const { likeJoke, unlikeJoke, joke } = useContext(JokeContext)
+  const { likeJoke, unlikeJoke, joke, likedJokes } = useContext(JokeContext)
   const { user } = useUser()
   const animationRef = useRef()
   const [likedLocal, setLikedLocal] = useState(false)
-  const likedByMe = joke && user ? joke.users.includes(user.userId) : false
+  const likedByMe =
+    likedJokes && joke
+      ? likedJokes.map(({ id }) => id).includes(joke.id)
+      : false
+  // joke && user ? likedJokes.find(joke => joke.id === id) : false
 
   useEffect(() => {
     setLikedLocal(likedByMe)

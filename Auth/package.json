@@ -5,7 +5,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "server": "nodemon ./AuthServer/src/index.js",
+    "proxy": "ngrok http 3000"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
@@ -21,6 +23,7 @@
     "jwt-decode": "^3.1.2",
     "lottie-react-native": "~2.6.1",
     "mongoose": "^5.10.17",
+    "ngrok": "^3.4.0",
     "nodemon": "^2.0.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",

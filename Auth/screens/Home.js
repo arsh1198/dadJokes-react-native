@@ -7,12 +7,17 @@ import { TouchableHighlight } from 'react-native-gesture-handler'
 import { Card } from 'react-native-paper'
 import { JokeContext } from '../context/jokeContext'
 import { SwipeListView } from 'react-native-swipe-list-view'
+import { useState } from 'react'
+import SearchBar from '../components/SearchBar'
+
+const filterJokes = (jokes, query) =>
+  jokes.filter(({ text }) => text.toLowerCase().includes(query.toLowerCase()))
 
 const Home = () => {
+  const [query, setQuery] = useState('')
+  console.log(query)
   const { fetchLikedJokes, likedJokes, unlikeJoke } = useContext(JokeContext)
-  const jokeList = likedJokes
-    ? likedJokes.map((joke, i) => ({ ...joke, key: `${i}` }))
-    : null
+  const filteredLikedJokes = likedJokes ? filterJokes(likedJokes, query) : []
 
   useEffect(() => {
     fetchLikedJokes()
@@ -87,9 +92,12 @@ const Home = () => {
       forceInset={{ top: 'always' }}
       style={{ flex: 1, backgroundColor: '#5C5A7A' }}
     >
+      <View style={{ paddingHorizontal: 12, marginTop: 12 }}>
+        <SearchBar query={query} onQueryChanged={setQuery} />
+      </View>
       <SwipeListView
         style={{ marginTop: 12 }}
-        data={jokeList}
+        data={filteredLikedJokes}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         rightOpenValue={-75}
