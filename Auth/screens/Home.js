@@ -9,6 +9,7 @@ import { JokeContext } from '../context/jokeContext'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { useState } from 'react'
 import SearchBar from '../components/SearchBar'
+import { MaterialIcons } from '@expo/vector-icons'
 
 const filterJokes = (jokes, query) =>
   jokes.filter(({ text }) => text.toLowerCase().includes(query.toLowerCase()))
@@ -17,7 +18,7 @@ const Home = () => {
   const [query, setQuery] = useState('')
   console.log(query)
   const { fetchLikedJokes, likedJokes, unlikeJoke } = useContext(JokeContext)
-  const filteredLikedJokes = likedJokes ? filterJokes(likedJokes, query) : []
+  var filteredLikedJokes = likedJokes ? filterJokes(likedJokes, query) : []
 
   useEffect(() => {
     fetchLikedJokes()
@@ -25,7 +26,8 @@ const Home = () => {
 
   const deleteRow = (rowMap, itemKey) => {
     const id = rowMap[itemKey].props.children[0].props.data.item.id
-    rowMap[itemKey].closeRow()
+    const newData = (filteredLikedJokes.filter = ({ jokeID }) => jokeID !== id)
+    filteredLikedJokes = newData
     unlikeJoke(id)
     fetchLikedJokes()
   }
@@ -36,7 +38,7 @@ const Home = () => {
     return (
       <TouchableHighlight>
         <View>
-          <Card style={styles.CardJoke} elevation={6}>
+          <Card style={styles.CardJoke}>
             <Text style={styles.TextJoke}>{data.item.text}</Text>
           </Card>
         </View>
@@ -72,7 +74,7 @@ const Home = () => {
             marginRight: 12
           }}
         >
-          <Text>Delete</Text>
+          <MaterialIcons name="delete" size={24} color="black" />
         </TouchableOpacity>
       </View>
     )
@@ -92,11 +94,12 @@ const Home = () => {
       forceInset={{ top: 'always' }}
       style={{ flex: 1, backgroundColor: '#5C5A7A' }}
     >
-      <View style={{ paddingHorizontal: 12, marginTop: 12 }}>
+      <View style={{ paddingHorizontal: 16, marginTop: 24 }}>
         <SearchBar query={query} onQueryChanged={setQuery} />
       </View>
       <SwipeListView
-        style={{ marginTop: 12 }}
+        showsVerticalScrollIndicator={false}
+        style={{ marginTop: 18 }}
         data={filteredLikedJokes}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
@@ -116,6 +119,8 @@ const styles = StyleSheet.create({
     color: '#3e3e3e'
   },
   CardJoke: {
+    borderColor: 'black',
+    borderWidth: 1.75,
     textAlign: 'center',
     height: 'auto',
     padding: 24,
