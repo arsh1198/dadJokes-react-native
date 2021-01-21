@@ -25,8 +25,9 @@ const Home = () => {
   }, [])
 
   const deleteRow = (rowMap, itemKey) => {
+    rowMap[itemKey].closeRow()
     const id = rowMap[itemKey].props.children[0].props.data.item.id
-    const newData = (filteredLikedJokes.filter = ({ jokeID }) => jokeID !== id)
+    const newData = filteredLikedJokes.filter(({ jokeId }) => jokeId !== id)
     filteredLikedJokes = newData
     unlikeJoke(id)
     fetchLikedJokes()
